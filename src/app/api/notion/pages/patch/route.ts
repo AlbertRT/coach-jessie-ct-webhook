@@ -30,8 +30,6 @@ export async function POST(req: NextRequest) {
 			},
 		});
 
-		NextResponse.redirect("/");
-
 		return NextResponse.json({
 			success: true,
 			msg: "Data updated",
