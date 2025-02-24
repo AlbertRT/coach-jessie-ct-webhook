@@ -7,6 +7,13 @@ export async function POST(req: NextRequest) {
 
 	try {
 		const page_id = await getPageId(nama, no_hp);
+
+		if (!page_id) {
+			return NextResponse.redirect(
+				"https://coachjessiectreregist.fillout.com/t/kUwggQES63us?reregis=true"
+			);
+		}
+
 		await notionClient.pages.update({
 			page_id,
 			properties: {
@@ -23,13 +30,13 @@ export async function POST(req: NextRequest) {
 			},
 		});
 
+		NextResponse.redirect("/");
+
 		return NextResponse.json({
 			success: true,
 			msg: "Data updated",
 		});
 	} catch (error) {
-		console.log(error);
-
 		return Response.json({ error: `${error}` }, { status: 500 });
 	}
 }
