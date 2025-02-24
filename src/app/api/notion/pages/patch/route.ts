@@ -23,11 +23,8 @@ export async function POST(req: NextRequest) {
 			},
 		});
 
-		return Response.json({ status: 200 });
+		return Response.json({ response }, { status: 200 });
 	} catch (error) {
-		return Response.json(
-			{ error: "Something went wrong" },
-			{ status: 500 }
-		);
+		return Response.json({ error: `${error}` }, { status: 500 });
 	}
 }
