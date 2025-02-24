@@ -7,7 +7,7 @@ export async function POST(req: NextRequest) {
 
 	try {
 		const page_id = await getPageId(nama, no_hp);
-		const response = await notionClient.pages.update({
+		await notionClient.pages.update({
 			page_id,
 			properties: {
 				ReRegister: {
