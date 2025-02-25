@@ -1,6 +1,5 @@
 import getPageId from "@/app/helper/getPageId";
 import { notionClient } from "@/app/lib/notion";
-import { redirect } from "next/navigation";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
