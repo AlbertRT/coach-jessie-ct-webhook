@@ -21,5 +21,5 @@ export default async function getPageId(nama: string, hp: string) {
 		},
 	});
 
-	return res.results[0].id;
+	return res.results.length === 0 ? null : res.results[0].id;
 }

@@ -1,40 +1,58 @@
 import getPageId from "@/app/helper/getPageId";
 import { notionClient } from "@/app/lib/notion";
+import { redirect } from "next/navigation";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
 	const { nama, no_hp } = await req.json();
 
-	try {
-		const page_id = await getPageId(nama, no_hp);
+	const page_id = await getPageId(nama, no_hp);
+	const database_id: string = process.env.NOTION_DATABASE_ID as string;
 
-		if (!page_id) {
-			return NextResponse.redirect(
-				"https://coachjessiectreregist.fillout.com/t/kUwggQES63us?reregis=true"
-			);
-		}
-
-		await notionClient.pages.update({
-			page_id,
+	if (!page_id) {
+		await notionClient.pages.create({
+			parent: {
+				database_id,
+			},
 			properties: {
-				ReRegister: {
-					rich_text: [
+				Nama: {
+					title: [
 						{
-							type: "text",
 							text: {
-								content: "true",
+								content: nama,
 							},
 						},
 					],
+				},
+				"No HP": {
+					phone_number: no_hp,
+				},
+				Register: {
+					checkbox: false,
+				},
+				ReRegister: {
+					checkbox: true,
 				},
 			},
 		});
 
 		return NextResponse.json({
-			success: true,
-			msg: "Data updated",
+			status: 201,
+			msg: "Created",
 		});
-	} catch (error) {
-		return Response.json({ error: `${error}` }, { status: 500 });
 	}
+
+	await notionClient.pages.update({
+		page_id,
+		properties: {
+			ReRegister: {
+				checkbox: true,
+			},
+		},
+	});
+
+	return NextResponse.json({
+		success: true,
+		msg: "Data updated",
+	});
 }
