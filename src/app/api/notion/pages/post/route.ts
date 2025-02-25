@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
 		tgl_lahir,
 		rereg,
 	} = await req.json();
-	const database_id: string = process.env.NOTION_DATABASE_ID as string;
+	const database_id = process.env.NOTION_DATABASE_ID as string;
 
 	const page_id = await getPageId(nama, no_hp);
 
