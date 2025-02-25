@@ -3,16 +3,8 @@ import { notionClient } from "@/app/lib/notion";
 import { NextRequest } from "next/server";
 
 export async function POST(req: NextRequest) {
-	const {
-		nama,
-		no_hp,
-		status_cg,
-		cg,
-		alamat,
-		universitas,
-		tgl_lahir,
-		rereg,
-	} = await req.json();
+	const { nama, no_hp, status_cg, cg, alamat, universitas, tgl_lahir } =
+		await req.json();
 	const database_id = process.env.NOTION_DATABASE_ID as string;
 
 	const page_id = await getPageId(nama, no_hp);
