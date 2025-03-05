@@ -4,7 +4,7 @@ import { NextRequest } from "next/server";
 import { NotionPageProperties } from "@/types/types";
 
 export async function POST(req: NextRequest) {
-	const { nama, no_hp, status_cg, cg, alamat, universitas, tgl_lahir } =
+	const { nama, no_hp, status_cg, cg, alamat, universitas, tgl_lahir, rereg } =
 		await req.json();
 	const database_id = process.env.NOTION_DATABASE_ID as string;
 	const page_id = await getPageId(nama, no_hp);
@@ -89,6 +89,10 @@ export async function POST(req: NextRequest) {
 	// **6. Hanya tambahkan Universitas jika ada opsi yang valid**
 	if (univOption) {
 		properties["Universitas"] = { select: { id: univOption.id } };
+	}
+
+	if (rereg === "true") {
+		properties["ReRegister"] = { checkbox: true }
 	}
 
 	// **7. Buat halaman baru di Notion**

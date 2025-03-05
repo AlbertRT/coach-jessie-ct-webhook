@@ -29,6 +29,9 @@ export type NotionPageProperties = {
     Register: {
         checkbox: boolean;
     };
+    ReRegister?: {
+        checkbox: boolean;
+    }
     CG?: {
         select: {
             name: string;
