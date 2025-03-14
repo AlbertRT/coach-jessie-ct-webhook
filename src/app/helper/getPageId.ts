@@ -4,7 +4,7 @@ export default async function getPageId(nama: string, hp: string) {
 	const res = await notionClient.databases.query({
 		database_id: process.env.NOTION_DATABASE_ID as string,
 		filter: {
-			and: [
+			or: [
 				{
 					property: "Nama",
 					title: {
