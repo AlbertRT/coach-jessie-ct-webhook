@@ -18,15 +18,6 @@ export async function POST(req: NextRequest) {
 	}
 
 	// **2. Jika page_id ditemukan, hapus data lama dari Notion**
-	if (page_id) {
-		await notionClient.pages.update({
-			page_id,
-			in_trash: true,
-		});
-
-		return Response.json({ status: 200 });
-	}
-
 	let univOption;
 
 	// **3. Jika universitas ada, cari opsi di database Notion**
@@ -94,6 +85,23 @@ export async function POST(req: NextRequest) {
 	if (rereg === "true") {
 		properties["ReRegister"] = { checkbox: true }
 	}
+
+    if (page_id) {
+		await notionClient.pages.update({
+			page_id,
+			in_trash: true,
+		});
+
+        await notionClient.pages.create({
+			parent: {
+				database_id,
+			},
+			properties,
+		});
+
+		return Response.json({ status: 200 });
+	}
+
 
 	// **7. Buat halaman baru di Notion**
 	await notionClient.pages.create({
